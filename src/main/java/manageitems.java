@@ -130,6 +130,11 @@ public class manageitems extends javax.swing.JFrame {
         });
 
         edititem.setText("Edit");
+        edititem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                edititemActionPerformed(evt);
+            }
+        });
 
         deleteitem.setText("Delete");
 
@@ -312,6 +317,20 @@ public class manageitems extends javax.swing.JFrame {
         new adminhome().setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_customerbackActionPerformed
+
+    private void edititemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edititemActionPerformed
+        /**Object[] column = new Object[itemtable.getRowCount()];
+        Object[] row = new Object[itemtable.getRowCount()]; **/
+        int x = 0;
+        int z = 0;
+        // loop through every row
+        for (int i = 0; i < itemtable.getRowCount(); i++) {
+            // loop through every column in that row
+            for (int v = 0; v < itemtable.getColumnCount(); v++) {
+                System.out.println(itemtable.getValueAt(i,v));
+            }
+        }
+    }//GEN-LAST:event_edititemActionPerformed
 
     /**
      * @param args the command line arguments
