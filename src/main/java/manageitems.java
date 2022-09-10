@@ -20,14 +20,13 @@ import javax.swing.JOptionPane;
  * @author esthe
  */
 public class manageitems extends javax.swing.JFrame {
-
+String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/java/items.txt";
     /**
      * Creates new form manageitems
      */
     public manageitems() {
         initComponents();
         // Please change this filepath according to the folder's location on your machine.
-        String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/java/items.txt";
         File file = new File(filepath);
         
         try {
@@ -261,7 +260,6 @@ public class manageitems extends javax.swing.JFrame {
 
     private void loaditemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loaditemActionPerformed
         // Please change this filepath according to the folder's location on your machine.
-        String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/java/items.txt";
         File file = new File(filepath);
         
         try {
@@ -300,8 +298,7 @@ public class manageitems extends javax.swing.JFrame {
         String category = itemcategory.getSelectedItem().toString();
         
         try {
-            // Change the location of items.txt according to the folder's location on your machine.
-            FileWriter writer = new FileWriter("/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/java/items.txt",true);
+            FileWriter writer = new FileWriter(filepath,true);
             writer.write(id+"/"+name+"/"+quantity+"/"+price+"/"+category);
             writer.write(System.getProperty("line.separator"));
             writer.close();
@@ -319,16 +316,22 @@ public class manageitems extends javax.swing.JFrame {
     }//GEN-LAST:event_customerbackActionPerformed
 
     private void edititemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edititemActionPerformed
-        /**Object[] column = new Object[itemtable.getRowCount()];
-        Object[] row = new Object[itemtable.getRowCount()]; **/
         int x = 0;
         int z = 0;
+        FileWriter edit = null;
+    try {
+        edit = new FileWriter(filepath,true);
+    } catch (IOException ex) {
+        Logger.getLogger(manageitems.class.getName()).log(Level.SEVERE, null, ex);
+    }
         // loop through every row
         for (int i = 0; i < itemtable.getRowCount(); i++) {
             // loop through every column in that row
             for (int v = 0; v < itemtable.getColumnCount(); v++) {
-                System.out.println(itemtable.getValueAt(i,v));
+                System.out.print(itemtable.getValueAt(i,v));
+                System.out.print("/");
             }
+            System.out.print(System.getProperty("line.separator"));
         }
     }//GEN-LAST:event_edititemActionPerformed
 
