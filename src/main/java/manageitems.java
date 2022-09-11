@@ -31,7 +31,6 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
         initComponents();
         // Please change this filepath according to the folder's location on your machine.
         File file = new File(filepath);
-        
         try {
             // getting column names from txt file
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -139,6 +138,11 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
         });
 
         deleteitem.setText("Delete");
+        deleteitem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteitemActionPerformed(evt);
+            }
+        });
 
         itemtable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -320,13 +324,15 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
     private void edititemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edititemActionPerformed
 
         try {
-            // empty file contents
             PrintWriter writer = new PrintWriter(filepath);
+            // write column names
             writer.write("ID,Name,Quantity,Price,Category");
             writer.write(System.getProperty("line.separator"));
+            // loop through every row
             for (int i = 0; i < itemtable.getRowCount(); i++) {
             // loop through every column in that row
             for (int v = 0; v < itemtable.getColumnCount(); v++) {
+                // get value of cell in table and write it into file
                  String value = String.valueOf(itemtable.getValueAt(i,v));
                  writer.write(value);
                  writer.write("/");
@@ -340,6 +346,39 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
             JOptionPane.showMessageDialog(null, "There was a problem!");
         }       
     }//GEN-LAST:event_edititemActionPerformed
+
+    private void deleteitemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteitemActionPerformed
+        DefaultTableModel deletemodel = (DefaultTableModel)itemtable.getModel();
+        if (itemtable.getSelectedRow() != 1) {
+            deletemodel.removeRow(itemtable.getSelectedRow());
+            JOptionPane.showMessageDialog(null, "Deleted successfully!");
+            try {
+                PrintWriter writer = new PrintWriter(filepath);
+                // write column names
+                writer.write("ID,Name,Quantity,Price,Category");
+                writer.write(System.getProperty("line.separator"));
+                // loop through every row
+                for (int i = 0; i < itemtable.getRowCount(); i++) {
+                // loop through every column in that row
+                for (int v = 0; v < itemtable.getColumnCount(); v++) {
+                    // get value of cell in table and write it into file
+                    String value = String.valueOf(itemtable.getValueAt(i,v));
+                    writer.write(value);
+                    writer.write("/");
+                }
+                writer.write(System.getProperty("line.separator"));
+            }
+                writer.close();
+            
+        }
+            catch(Exception e) {
+                JOptionPane.showMessageDialog(null, "There was a problem!");
+            }       
+    }
+        else {
+            JOptionPane.showMessageDialog(null, "Please select a row to delete!");
+        }
+    }//GEN-LAST:event_deleteitemActionPerformed
 
     /**
      * @param args the command line arguments
