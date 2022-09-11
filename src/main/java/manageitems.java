@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -264,7 +267,6 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
         
         try {
             // getting column names from txt file
-
             BufferedReader br = new BufferedReader(new FileReader(file));
             String firstline = br.readLine().trim();
             String[] columnname = firstline.split(",");
@@ -316,23 +318,27 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
     }//GEN-LAST:event_customerbackActionPerformed
 
     private void edititemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edititemActionPerformed
-        int x = 0;
-        int z = 0;
-        FileWriter edit = null;
-    try {
-        edit = new FileWriter(filepath,true);
-    } catch (IOException ex) {
-        Logger.getLogger(manageitems.class.getName()).log(Level.SEVERE, null, ex);
-    }
-        // loop through every row
-        for (int i = 0; i < itemtable.getRowCount(); i++) {
+
+        try {
+            // empty file contents
+            PrintWriter writer = new PrintWriter(filepath);
+            writer.write("ID,Name,Quantity,Price,Category");
+            writer.write(System.getProperty("line.separator"));
+            for (int i = 0; i < itemtable.getRowCount(); i++) {
             // loop through every column in that row
             for (int v = 0; v < itemtable.getColumnCount(); v++) {
-                System.out.print(itemtable.getValueAt(i,v));
-                System.out.print("/");
+                 String value = String.valueOf(itemtable.getValueAt(i,v));
+                 writer.write(value);
+                 writer.write("/");
             }
-            System.out.print(System.getProperty("line.separator"));
+            writer.write(System.getProperty("line.separator"));
         }
+            writer.close();
+            
+       }
+        catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "There was a problem!");
+        }       
     }//GEN-LAST:event_edititemActionPerformed
 
     /**

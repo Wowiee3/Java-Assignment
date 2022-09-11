@@ -1,4 +1,4 @@
 ID,Name,Quantity,Price,Category
-1/Fish/5/2/Main Course
-2/IceCream/3/1/Dessert
-3/Fries/15/1/Appetizer
+1/Fish/5/10/Main Course/
+2/Rice/5/2/Main Course/
+3/Ice Cream/10/1/Dessert/
