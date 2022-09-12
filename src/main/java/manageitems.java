@@ -6,8 +6,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -23,13 +21,14 @@ import javax.swing.JOptionPane;
  * @author esthe
  */
 public class manageitems extends javax.swing.JFrame {
+//Please change the filepath variable according to items.txt's location on your machine
 String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/java/items.txt";
     /**
      * Creates new form manageitems
      */
     public manageitems() {
         initComponents();
-        // Please change this filepath according to the folder's location on your machine.
+        // Loading items from the txt file
         File file = new File(filepath);
         try {
             // getting column names from txt file
@@ -177,14 +176,9 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(83, 83, 83)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(customerback)
@@ -220,14 +214,17 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
                                         .addGap(14, 14, 14)
                                         .addComponent(edititem)
                                         .addGap(19, 19, 19)
-                                        .addComponent(deleteitem)))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                        .addComponent(deleteitem))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(106, 106, 106)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(110, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
@@ -249,24 +246,23 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(itemcategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(additem)
                     .addComponent(edititem)
                     .addComponent(deleteitem)
                     .addComponent(loaditem))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void loaditemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loaditemActionPerformed
-        // Please change this filepath according to the folder's location on your machine.
         File file = new File(filepath);
         
         try {
@@ -297,12 +293,14 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
     }//GEN-LAST:event_loaditemActionPerformed
 
     private void additemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_additemActionPerformed
+        // getting values from input fields
         String id = itemID.getText();
         String name = itemname.getText();
         String quantity = itemquantity.getText();
         String price = itemprice.getText();
         String category = itemcategory.getSelectedItem().toString();
         
+        // writing them into the file
         try {
             FileWriter writer = new FileWriter(filepath,true);
             writer.write(id+"/"+name+"/"+quantity+"/"+price+"/"+category);

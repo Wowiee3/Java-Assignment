@@ -170,10 +170,7 @@ public class logincustomer extends javax.swing.JFrame {
         } 
         catch (FileNotFoundException ex) {
             Logger.getLogger(manageitems.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(manageitems.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+        } 
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void registerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerButtonActionPerformed
@@ -243,4 +240,5 @@ public class logincustomer extends javax.swing.JFrame {
     private javax.swing.JButton registerButton;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
+
 }
