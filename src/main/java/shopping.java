@@ -95,6 +95,11 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
         checkout.setText("Proceed to Checkout");
 
         addcart.setText("Add to cart");
+        addcart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addcartActionPerformed(evt);
+            }
+        });
 
         deletecart.setText("Delete from cart");
 
@@ -145,9 +150,9 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
                 .addGap(35, 35, 35)
                 .addComponent(jLabel)
                 .addGap(47, 47, 47)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -163,6 +168,27 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void addcartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addcartActionPerformed
+        // get values of selected row
+        if (itemtable.getSelectedRow() != 1) {
+            for (int v = 0; v < itemtable.getColumnCount(); v++) {
+                int row = itemtable.getSelectedRow();
+                if (v == 2) {
+                    String x = String.valueOf(itemtable.getValueAt(row,v));
+                    int value = Integer.parseInt(x);
+                    System.out.print(value - 1);
+                }
+                else {
+                System.out.print(itemtable.getValueAt(row, v));
+                }
+                // get value of cell in table and write it into file
+                //String value = String.valueOf(itemtable.getValueAt(1,1));
+                //writer.write(value);
+                System.out.print("/");
+            }
+        }    
+    }//GEN-LAST:event_addcartActionPerformed
 
     /**
      * @param args the command line arguments
