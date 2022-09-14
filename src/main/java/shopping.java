@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -20,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 public class shopping extends javax.swing.JFrame {
     // Please change the filepath when using it yourself
 String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/java/items.txt";
+String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/java/cart.txt";
     /**
      * Creates new form shopping
      */
@@ -71,6 +74,7 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
         jLabel2 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         itemtable = new javax.swing.JTable();
+        loaditem = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,12 +91,32 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
 
             },
             new String [] {
-                "ID", "Name", "Quantity", "Price", "Category"
+                "Name", "Price", "Quantity"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(shoppingcart);
 
         checkout.setText("Proceed to Checkout");
+        checkout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkoutActionPerformed(evt);
+            }
+        });
 
         addcart.setText("Add to cart");
         addcart.addActionListener(new java.awt.event.ActionListener() {
@@ -114,8 +138,23 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
             new String [] {
                 "ID", "Name", "Quantity", "Price", "Category"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane4.setViewportView(itemtable);
+
+        loaditem.setText("Load Items");
+        loaditem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loaditemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -130,7 +169,9 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(addcart, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(addcart, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
+                                    .addComponent(loaditem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addComponent(deletecart)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -160,10 +201,13 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(checkout, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(addcart, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(deletecart, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(28, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(deletecart, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(addcart, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(loaditem, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -171,24 +215,106 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
 
     private void addcartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addcartActionPerformed
         // get values of selected row
-        if (itemtable.getSelectedRow() != 1) {
-            for (int v = 0; v < itemtable.getColumnCount(); v++) {
-                int row = itemtable.getSelectedRow();
-                if (v == 2) {
-                    String x = String.valueOf(itemtable.getValueAt(row,v));
-                    int value = Integer.parseInt(x);
-                    System.out.print(value - 1);
+        if (itemtable.getSelectionModel().isSelectionEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please select an item to add!");
+        }
+        else {
+            // subtract one from the selected item
+            DefaultTableModel model = (DefaultTableModel)itemtable.getModel();
+            int row = itemtable.getSelectedRow();
+            int quantity = Integer.parseInt(String.valueOf(itemtable.getValueAt(row, 2)));
+            model.setValueAt(quantity - 1, row, 2);
+            
+            // add the item into the cart array
+            String[] cartlist = {String.valueOf(itemtable.getValueAt(row, 1)), String.valueOf(itemtable.getValueAt(row, 3)), ""};
+            cartlist[2] = "1";
+            
+            // add the item into the cart table
+            DefaultTableModel cart = (DefaultTableModel)shoppingcart.getModel();
+            // cart.addRow(cartlist); 
+            
+            // check if item already exists in cart
+            if (shoppingcart.getRowCount() != 0) {
+                for (int i = 0; i < shoppingcart.getRowCount(); i++) {
+                    if (cartlist[0] == shoppingcart.getValueAt(i,0)) {
+                        String cartquantity = String.valueOf(shoppingcart.getValueAt(i,2));
+                        shoppingcart.setValueAt(Integer.parseInt(cartquantity) + 1, i, 2);
+                    }
                 }
-                else {
-                System.out.print(itemtable.getValueAt(row, v));
-                }
-                // get value of cell in table and write it into file
-                //String value = String.valueOf(itemtable.getValueAt(1,1));
-                //writer.write(value);
-                System.out.print("/");
             }
-        }    
+            else {
+                cart.addRow(cartlist);
+            }
+        }
     }//GEN-LAST:event_addcartActionPerformed
+
+    private void loaditemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loaditemActionPerformed
+        File file = new File(filepath);
+
+        try {
+            // getting column names from txt file
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String firstline = br.readLine().trim();
+            String[] columnname = firstline.split(",");
+            DefaultTableModel model = (DefaultTableModel)itemtable.getModel();
+            model.setColumnIdentifiers(columnname);
+            model.setRowCount(0);
+
+            Object[] tableLines = br.lines().toArray();
+
+            // adding lines from txt file to the table
+            for(int i = 0; i < tableLines.length; i++) {
+                String line = tableLines[i].toString().trim();
+                String[] row = line.split("/");
+                model.addRow(row);
+            }
+        }
+        catch (FileNotFoundException ex) {
+            Logger.getLogger(manageitems.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(manageitems.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_loaditemActionPerformed
+
+    private void checkoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkoutActionPerformed
+        // add the selected item into the cart
+        /*try {
+            PrintWriter cart = new PrintWriter(cartfile);  
+            for (int x = 0; x < itemtable.getColumnCount(); x++) {
+                cart.write(String.valueOf(itemtable.getValueAt(row, x)));
+                cart.write("/");
+            }
+            cart.write(System.getProperty("line.separator"));
+            cart.close();
+            }
+            catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "There was a problem!");
+        } */
+        // write updated stock into the file
+        /*try {
+        PrintWriter writer = new PrintWriter(filepath);
+        // write column names
+        writer.write("ID,Name,Quantity,Price,Category");
+        writer.write(System.getProperty("line.separator"));
+        // loop through every row
+        for (int i = 0; i < itemtable.getRowCount(); i++) {
+        // loop through every column in that row
+        for (int v = 0; v < itemtable.getColumnCount(); v++) {
+            // get value of cell in table and write it into file
+             String value = String.valueOf(itemtable.getValueAt(i,v));
+             writer.write(value);
+             writer.write("/");
+        }
+        writer.write(System.getProperty("line.separator"));
+    }
+        writer.close();
+
+   }
+    catch(Exception e) {
+        JOptionPane.showMessageDialog(null, "There was a problem!");
+    }*/
+    }//GEN-LAST:event_checkoutActionPerformed
 
     /**
      * @param args the command line arguments
@@ -235,6 +361,7 @@ String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JButton loaditem;
     private javax.swing.JTable shoppingcart;
     // End of variables declaration//GEN-END:variables
 }
