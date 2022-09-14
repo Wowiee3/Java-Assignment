@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.util.*;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -23,6 +24,7 @@ public class shopping extends javax.swing.JFrame {
     // Please change the filepath when using it yourself
 String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/java/items.txt";
 String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/java/cart.txt";
+
     /**
      * Creates new form shopping
      */
@@ -126,6 +128,11 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
         });
 
         deletecart.setText("Delete from cart");
+        deletecart.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deletecartActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -228,6 +235,7 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
             // add the item into the cart array
             String[] cartlist = {String.valueOf(itemtable.getValueAt(row, 1)), String.valueOf(itemtable.getValueAt(row, 3)), ""};
             cartlist[2] = "1";
+            System.out.print(Arrays.toString(cartlist));
             
             // add the item into the cart table
             DefaultTableModel cart = (DefaultTableModel)shoppingcart.getModel();
@@ -239,6 +247,9 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
                     if (cartlist[0] == shoppingcart.getValueAt(i,0)) {
                         String cartquantity = String.valueOf(shoppingcart.getValueAt(i,2));
                         shoppingcart.setValueAt(Integer.parseInt(cartquantity) + 1, i, 2);
+                    }
+                    else {
+                        cart.addRow(cartlist);
                     }
                 }
             }
@@ -315,6 +326,38 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
         JOptionPane.showMessageDialog(null, "There was a problem!");
     }*/
     }//GEN-LAST:event_checkoutActionPerformed
+
+    private void deletecartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletecartActionPerformed
+        // get values of selected row
+        if (shoppingcart.getSelectionModel().isSelectionEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please select an item to delete!");
+        }
+        else {
+            // subtract one from the selected item
+            DefaultTableModel model = (DefaultTableModel)itemtable.getModel();
+            int row = shoppingcart.getSelectedRow();
+            int itemrow = 0;
+            
+            for (int i = 0; i < itemtable.getRowCount(); i++) {
+                if (itemtable.getValueAt(i, 1) == shoppingcart.getValueAt(row,0)) {
+                    itemrow = i;
+                }
+            }
+            int quantity = Integer.parseInt(String.valueOf(itemtable.getValueAt(itemrow, 2)));
+            model.setValueAt(quantity + 1, itemrow, 2);
+            
+            // add the item into the cart table
+            DefaultTableModel cart = (DefaultTableModel)shoppingcart.getModel();
+            int quantitycart = (Integer.parseInt(String.valueOf(shoppingcart.getValueAt(row,2))));
+            // I dunno why but it only works when I put 2 lol
+            if (quantitycart < 2) {
+                cart.removeRow(row);
+            }
+            else {
+                cart.setValueAt((quantitycart - 1), row, 2); 
+            }
+        }
+    }//GEN-LAST:event_deletecartActionPerformed
 
     /**
      * @param args the command line arguments
