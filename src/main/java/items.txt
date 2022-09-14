@@ -3,3 +3,4 @@ ID,Name,Quantity,Price,Category
 2/Rice/8/2/Main Course/
 3/Ice Cream/30/1/Dessert/
 4/Fries/50/2/Appetizer/
+5/Cola/10/3/Beverage/

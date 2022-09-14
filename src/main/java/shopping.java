@@ -56,6 +56,15 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
             Logger.getLogger(manageitems.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void calculateTotal() {
+        int totalprice = 0;
+        for (int i = 0; i < shoppingcart.getRowCount(); i++) {
+            totalprice += Integer.parseInt(String.valueOf(shoppingcart.getValueAt(i, 1)));
+            totalprice *= Integer.parseInt(String.valueOf(shoppingcart.getValueAt(i, 2)));
+        }
+        total.setText("Total: $" + totalprice);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -77,6 +86,7 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
         jScrollPane4 = new javax.swing.JScrollPane();
         itemtable = new javax.swing.JTable();
         loaditem = new javax.swing.JButton();
+        total = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -163,6 +173,9 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
             }
         });
 
+        total.setFont(new java.awt.Font("sansserif", 0, 14)); // NOI18N
+        total.setText("Total:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -174,21 +187,23 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(581, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(addcart, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
                                     .addComponent(loaditem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addComponent(deletecart)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(checkout, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(deletecart)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane2))))
+                                .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(68, 68, 68)
+                                .addComponent(checkout, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane2)))
                         .addGap(49, 49, 49))))
             .addComponent(jLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 1089, Short.MAX_VALUE)
         );
@@ -210,7 +225,9 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
                     .addComponent(checkout, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(deletecart, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(deletecart, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(addcart, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(loaditem, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -257,6 +274,7 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
                 cart.addRow(cartlist);
             }
         }
+        calculateTotal();
     }//GEN-LAST:event_addcartActionPerformed
 
     private void loaditemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loaditemActionPerformed
@@ -292,6 +310,8 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
         // add the selected items into the cart file
         try {
             PrintWriter writer = new PrintWriter(cartfile);;
+            writer.write(total.getText());
+            writer.write(System.getProperty("line.separator"));
             // loop through every row
             for (int i = 0; i < shoppingcart.getRowCount(); i++) {
             // loop through every column in that row
@@ -364,6 +384,7 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
                 cart.setValueAt((quantitycart - 1), row, 2); 
             }
         }
+        calculateTotal();
     }//GEN-LAST:event_deletecartActionPerformed
 
     /**
@@ -413,5 +434,6 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JButton loaditem;
     private javax.swing.JTable shoppingcart;
+    private javax.swing.JLabel total;
     // End of variables declaration//GEN-END:variables
 }
