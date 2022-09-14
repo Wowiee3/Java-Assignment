@@ -235,7 +235,7 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
             // add the item into the cart array
             String[] cartlist = {String.valueOf(itemtable.getValueAt(row, 1)), String.valueOf(itemtable.getValueAt(row, 3)), ""};
             cartlist[2] = "1";
-            System.out.print(Arrays.toString(cartlist));
+            // System.out.print(Arrays.toString(cartlist));
             
             // add the item into the cart table
             DefaultTableModel cart = (DefaultTableModel)shoppingcart.getModel();
@@ -289,42 +289,49 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
     }//GEN-LAST:event_loaditemActionPerformed
 
     private void checkoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkoutActionPerformed
-        // add the selected item into the cart
-        /*try {
-            PrintWriter cart = new PrintWriter(cartfile);  
-            for (int x = 0; x < itemtable.getColumnCount(); x++) {
-                cart.write(String.valueOf(itemtable.getValueAt(row, x)));
-                cart.write("/");
+        // add the selected items into the cart file
+        try {
+            PrintWriter writer = new PrintWriter(cartfile);;
+            // loop through every row
+            for (int i = 0; i < shoppingcart.getRowCount(); i++) {
+            // loop through every column in that row
+            for (int v = 0; v < shoppingcart.getColumnCount(); v++) {
+                // get value of cell in table and write it into file
+                 String value = String.valueOf(shoppingcart.getValueAt(i,v));
+                 writer.write(value);
+                 writer.write("/");
             }
-            cart.write(System.getProperty("line.separator"));
-            cart.close();
+            writer.write(System.getProperty("line.separator"));
             }
-            catch(Exception e) {
-            JOptionPane.showMessageDialog(null, "There was a problem!");
-        } */
-        // write updated stock into the file
-        /*try {
-        PrintWriter writer = new PrintWriter(filepath);
-        // write column names
-        writer.write("ID,Name,Quantity,Price,Category");
-        writer.write(System.getProperty("line.separator"));
-        // loop through every row
-        for (int i = 0; i < itemtable.getRowCount(); i++) {
-        // loop through every column in that row
-        for (int v = 0; v < itemtable.getColumnCount(); v++) {
-            // get value of cell in table and write it into file
-             String value = String.valueOf(itemtable.getValueAt(i,v));
-             writer.write(value);
-             writer.write("/");
+            writer.close();
+            
         }
-        writer.write(System.getProperty("line.separator"));
-    }
-        writer.close();
+        catch(Exception e) {
+            JOptionPane.showMessageDialog(null, "There was a problem!");
+        }
+        // write updated stock into the file
+        try {
+            PrintWriter writer = new PrintWriter(filepath);
+            // write column names
+            writer.write("ID,Name,Quantity,Price,Category");
+            writer.write(System.getProperty("line.separator"));
+            // loop through every row
+            for (int i = 0; i < itemtable.getRowCount(); i++) {
+            // loop through every column in that row
+            for (int v = 0; v < itemtable.getColumnCount(); v++) {
+                // get value of cell in table and write it into file
+                 String value = String.valueOf(itemtable.getValueAt(i,v));
+                 writer.write(value);
+                 writer.write("/");
+            }
+            writer.write(System.getProperty("line.separator"));
+            }
+            writer.close();
 
    }
     catch(Exception e) {
         JOptionPane.showMessageDialog(null, "There was a problem!");
-    }*/
+    }
     }//GEN-LAST:event_checkoutActionPerformed
 
     private void deletecartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletecartActionPerformed
