@@ -1,2 +1,3 @@
-Total: $4
-Fries/2/2/
+bob
+Total: $2
+Fries/2/1/

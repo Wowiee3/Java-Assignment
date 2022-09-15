@@ -1,3 +1,12 @@
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -8,12 +17,33 @@
  * @author esthe
  */
 public class vieworders extends javax.swing.JFrame {
-
+String orders = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/java/orders.txt";
     /**
      * Creates new form vieworders
      */
-    public vieworders() {
+    public vieworders() throws IOException {
         initComponents();
+        try {
+            // getting column names from txt file
+            BufferedReader br = new BufferedReader(new FileReader(orders));
+            String firstline = br.readLine().trim();
+            String[] columnname = firstline.split(",");
+            DefaultTableModel model = (DefaultTableModel)ordertable.getModel();
+            model.setColumnIdentifiers(columnname);
+            model.setRowCount(0);
+            
+            Object[] tableLines = br.lines().toArray();
+            
+            // adding lines from txt file to the table
+            for(int i = 0; i < tableLines.length; i++) {
+                String line = tableLines[i].toString().trim();
+                String[] row = line.split("/");
+                model.addRow(row);
+            }
+        } 
+        catch (FileNotFoundException ex) {
+            Logger.getLogger(manageitems.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -26,6 +56,9 @@ public class vieworders extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ordertable = new javax.swing.JTable();
+        customerback = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -33,25 +66,62 @@ public class vieworders extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Customer Orders");
 
+        ordertable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Name", "Total", "Items"
+            }
+        ));
+        jScrollPane1.setViewportView(ordertable);
+
+        customerback.setText("Back");
+        customerback.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                customerbackActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(customerback)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(147, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(129, 129, 129))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(16, 16, 16)
+                .addComponent(customerback)
+                .addGap(28, 28, 28)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(291, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 324, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void customerbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerbackActionPerformed
+        new adminhome().setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_customerbackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -83,12 +153,19 @@ public class vieworders extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new vieworders().setVisible(true);
+                try {
+                    new vieworders().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(vieworders.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton customerback;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable ordertable;
     // End of variables declaration//GEN-END:variables
 }

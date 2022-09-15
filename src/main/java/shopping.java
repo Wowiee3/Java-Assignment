@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -309,7 +310,7 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
     private void checkoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkoutActionPerformed
         // add the selected items into the cart file
         try {
-            PrintWriter writer = new PrintWriter(cartfile);;
+            FileWriter writer = new FileWriter(cartfile,true);
             writer.write(total.getText());
             writer.write(System.getProperty("line.separator"));
             // loop through every row
@@ -347,11 +348,18 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
             writer.write(System.getProperty("line.separator"));
             }
             writer.close();
+            
 
    }
     catch(Exception e) {
         JOptionPane.showMessageDialog(null, "There was a problem!");
     }
+    try {
+        new checkout().setVisible(true);
+    } catch (IOException ex) {
+        Logger.getLogger(shopping.class.getName()).log(Level.SEVERE, null, ex);
+    }
+            this.setVisible(false);
     }//GEN-LAST:event_checkoutActionPerformed
 
     private void deletecartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletecartActionPerformed

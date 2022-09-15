@@ -1,2 +1,3 @@
-ID,Name,Paid,Change,Items
-1/Josh/15/3/Fish,Pizza
+Name,Total,Items
+John/Total: $6/Cola/3/2/
+bob/Total: $2/Fries/2/1//

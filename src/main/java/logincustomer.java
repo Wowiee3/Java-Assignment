@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import java.io.PrintWriter;
 
 public class logincustomer extends javax.swing.JFrame {
 
@@ -139,6 +140,7 @@ public class logincustomer extends javax.swing.JFrame {
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         String filepath = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/java/users.txt";
+        String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/java/cart.txt";
         File file = new File(filepath);
         
         String user = username.getText();
@@ -158,6 +160,10 @@ public class logincustomer extends javax.swing.JFrame {
                 
                 if (user.equals(word[0])&&pass.equals(word[1])) {
                     login = 1;
+                    PrintWriter name = new PrintWriter(cartfile);
+                    name.write(user);
+                    name.write(System.getProperty("line.separator"));
+                    name.close();
                     new shopping().setVisible(true);
                     this.setVisible(false);
                     break;

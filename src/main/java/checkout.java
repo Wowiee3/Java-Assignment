@@ -3,8 +3,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -22,6 +25,7 @@ import java.util.*;
  */
 public class checkout extends javax.swing.JFrame {
 String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/java/cart.txt";
+String orders = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/java/orders.txt";
     /**
      * Creates new form checkout
      */
@@ -29,26 +33,29 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
         initComponents();
         // Loading items from the txt file
         File file = new File(cartfile);
-        String firstline = "";
+        String secondline = "";
         try {
             BufferedReader br = new BufferedReader(new FileReader(file));
-            firstline = br.readLine().trim();
+            secondline = Files.readAllLines(Paths.get(cartfile)).get(1);
             DefaultTableModel model = (DefaultTableModel)shoppingcart.getModel();
             Object[] tableLines = br.lines().toArray();
+            String[] row = null;
             
             // adding lines from txt file to the table
             for (Object tableLine : tableLines) {
                 String line = tableLine.toString().trim();
-                String[] row = line.split("/");
-                model.addRow(row);
+                if (line.contains("/")) {
+                    row = line.split("/");
+                    model.addRow(row);
+                }
             }
         } 
         catch (FileNotFoundException ex) {
             Logger.getLogger(manageitems.class.getName()).log(Level.SEVERE, null, ex);
         }
     
-        subtotal.setText(firstline);
-        int pricetotal = Integer.parseInt(firstline.replaceAll("[^0-9]", ""))+ 4;
+        subtotal.setText("Subtotal: $" + secondline);
+        int pricetotal = Integer.parseInt(secondline.replaceAll("[^0-9]", ""))+ 4;
         total.setText("Total price: $" + pricetotal);
     }
 
@@ -171,6 +178,30 @@ String cartfile = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/mai
         }
         else {
             change.setText("Change: $" + extra);
+            try {
+                File file=new File(cartfile); 
+                FileReader fr=new FileReader(file);
+                BufferedReader br=new BufferedReader(fr); 
+                StringBuffer sb=new StringBuffer(); 
+                String line;  
+                while((line=br.readLine())!=null)  
+                {  
+                    sb.append(line);
+                    sb.append("/");
+                }  
+                fr.close();  
+                FileWriter fw = new FileWriter(orders, true);
+                fw.write(sb.toString());
+                fw.write(System.getProperty("line.separator"));
+                fw.close();
+            }
+ 
+            catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "There was a problem!");
+            }
+            JOptionPane.showMessageDialog(null, "Thank you for shopping with us!");
+            new home().setVisible(true);
+            this.setVisible(false);
         }
     }//GEN-LAST:event_paymentActionPerformed
 
