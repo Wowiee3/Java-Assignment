@@ -54,7 +54,7 @@ String orders = "/home/wowiee/Desktop/School/Sem 5/java/JavaAssignment/src/main/
             Logger.getLogger(manageitems.class.getName()).log(Level.SEVERE, null, ex);
         }
     
-        subtotal.setText("Subtotal: $" + secondline);
+        subtotal.setText("Subtotal: $" + secondline.replaceAll("[^0-9]", ""));
         int pricetotal = Integer.parseInt(secondline.replaceAll("[^0-9]", ""))+ 4;
         total.setText("Total price: $" + pricetotal);
     }

@@ -1,3 +1,8 @@
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -102,7 +107,11 @@ public class adminhome extends javax.swing.JFrame {
     }//GEN-LAST:event_manageitemsActionPerformed
 
     private void viewordersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewordersActionPerformed
-        new vieworders().setVisible(true);
+        try {
+            new vieworders().setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(adminhome.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.setVisible(false);
     }//GEN-LAST:event_viewordersActionPerformed
 
